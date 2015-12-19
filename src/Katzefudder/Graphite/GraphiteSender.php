@@ -9,7 +9,7 @@
 namespace Katzefudder\Graphite;
 
 
-trait GraphiteSender {
+class GraphiteSender {
 	public function sendToGraphite() {
 		$this->send();
 	}

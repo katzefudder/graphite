@@ -21,7 +21,8 @@ class GraphiteServiceProvider extends ServiceProvider {
 	 */
 	public function register() {
 		$this->app->bind(
-			'Katzefudder\Graphite\GraphiteInterface'
+			'graphite',
+			'Katzefudder\Graphite\GraphiteSender'
 		);
 	}
 }
