@@ -2,12 +2,21 @@
 
 namespace Katzefudder\Graphite;
 
+use Illuminate\Contracts\Config\Repository;
+
 class GraphiteSender {
-	public function sendToGraphite($message, $count = 1) {
-		$endpoint = $this->config->get('graphite_host');
-		$prefix = $this->config->get('graphite_prefix');
-		$connection = fsockopen($endpoint, $this->config->get('graphite_port'));
-		$message = $prefix.".$message $count ".time().PHP_EOL;
+
+	private $config = null;
+
+	public function __construct(Repository $config) {
+		$this->config = $config;
+	}
+
+	public function sendToGraphite($message) {
+		$endpoint = $this->config->get('graphite.graphite_host');
+		$prefix = $this->config->get('graphite.graphite_prefix');
+		$connection = fsockopen($endpoint, $this->config->get('graphite.graphite_port'));
+		$message = $prefix.".$message ".time().PHP_EOL;
 		fwrite($connection, $message);
 		return fclose($connection);
 	}
