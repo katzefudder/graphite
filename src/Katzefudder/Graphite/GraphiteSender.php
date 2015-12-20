@@ -12,12 +12,30 @@ class GraphiteSender {
 		$this->config = $config;
 	}
 
-	public function sendToGraphite($message) {
+
+	/**
+	 * Data to send to Graphite host
+	 * @param string $data
+	 * @return bool
+	 */
+	public function sendToGraphite($data) {
 		$endpoint = $this->config->get('graphite.graphite_host');
+		$port = $this->config->get('graphite.graphite_port');
+
 		$prefix = $this->config->get('graphite.graphite_prefix');
-		$connection = fsockopen($endpoint, $this->config->get('graphite.graphite_port'));
-		$message = $prefix.".$message ".time().PHP_EOL;
-		fwrite($connection, $message);
+		$data = $prefix.".$data ".time().PHP_EOL;
+		return $this->sendData($endpoint, $port, $data);
+	}
+
+
+	/**
+	 * @param string $endpoint
+	 * @param string $data
+	 * @return bool
+	 */
+	public function sendData($endpoint, $port, $data) {
+		$connection = fsockopen($endpoint, $port);
+		fwrite($connection, $data);
 		return fclose($connection);
 	}
 }

@@ -1,6 +1,6 @@
 {
 	"name": "katzefudder/graphite",
-	"description": "Send data to graphite",
+	"description": "Send data to Graphite Host",
 	"version": "1.0.0",
 	"homepage": "https://github.com/katzefidder/graphite",
 	"keywords":
