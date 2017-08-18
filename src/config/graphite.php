@@ -1,6 +1,6 @@
 <?php
 
 return [
-	'grapgite_host' => 'http://graphite.katzefudder.de',
+	'graphite_host' => 'http://host.domain.tld',
 	'graphite_port' => '2003'
 ];
