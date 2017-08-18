@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: flo
- * Date: 20.12.15
- * Time: 14:19
- */
 class GraphiteSenderTest extends PHPUnit_Framework_TestCase {
 
 	private $config = null;
