@@ -3,6 +3,7 @@
 namespace Katzefudder\Graphite;
 
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Support\Facades\Log;
 
 class GraphiteSender {
 
@@ -19,12 +20,19 @@ class GraphiteSender {
 	 * @return bool
 	 */
 	public function sendToGraphite($data) {
-		$endpoint = $this->config->get('graphite.graphite_host');
-		$port = $this->config->get('graphite.graphite_port');
+        if (this->config->get('graphite.enabled') === false) return true;
+        try {
+            $endpoint = $this->config->get('graphite.graphite_host');
+            $port = $this->config->get('graphite.graphite_port');
 
-		$prefix = $this->config->get('graphite.graphite_prefix');
-		$data = $prefix.".$data ".time().PHP_EOL;
-		return $this->sendData($endpoint, $port, $data);
+            $prefix = $this->config->get('graphite.graphite_prefix');
+            $data = $prefix.".$data ".time().PHP_EOL;
+            return $this->sendData($endpoint, $port, $data);
+        } catch (\Exception $e) {
+            \Log::info('sending to graphite failed: '.$e->getMessage());
+            return false;
+        }
+
 	}
 
 
@@ -33,7 +41,7 @@ class GraphiteSender {
 	 * @param string $data
 	 * @return bool
 	 */
-	public function sendData($endpoint, $port, $data) {
+	private function sendData($endpoint, $port, $data) {
 		$connection = fsockopen($endpoint, $port);
 		fwrite($connection, $data);
 		return fclose($connection);
